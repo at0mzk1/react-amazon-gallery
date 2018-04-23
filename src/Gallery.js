@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Thumbnail from './Thumbnail'
+import ReactImageZoom from 'react-image-zoom'
 
 let DEFAULTS = {
-  bkgSize: 'contain',
   height: 350,
   width: 400,
   mirror: true,
@@ -13,9 +13,9 @@ let DEFAULTS = {
     hlSize: 16,
     size: 40,
     spacing: 8,
-    orientation: 'vertical',
+    orientation: 'horizontal',
     posX: 'left',
-    posY: 'top'
+    posY: 'bot'
   },
   secondary: {
     overlay: false,
@@ -23,16 +23,17 @@ let DEFAULTS = {
     hlSize: 16,
     size: 40,
     spacing: 8,
-    orientation: 'horizontal',
+    orientation: 'vertical',
     posX: 'left',
-    posY: 'bot'
+    posY: 'top'
   }
 }
+
+const props = { width: 400, height: 250, zoomWidth: 500 }
 
 class Gallery extends React.Component {
   static propTypes = {
     images: PropTypes.array,
-    bkgSize: PropTypes.string,
     height: PropTypes.number,
     width: PropTypes.number,
     main: PropTypes.object,
@@ -258,7 +259,6 @@ class Gallery extends React.Component {
       height,
       images,
       style,
-      bkgSize,
       jewelContainerStyle,
       jewelSecondaryContainerStyle
 		} = this.props
@@ -277,15 +277,6 @@ class Gallery extends React.Component {
     }
 
     let imageLoc = this.getGalleryImage(images)
-
-    let galleryStyle = {
-      height,
-      width,
-      backgroundImage: "url('" + imageLoc + "')",
-      backgroundSize: bkgSize || 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center'
-    }
 
     let jewelMainContainer = this.buildJewelContainerStyle('main')
     let jewelSecondaryContainer = this.buildJewelContainerStyle('secondary')
@@ -308,7 +299,7 @@ class Gallery extends React.Component {
     return (
       <div style={{ position: 'relative', ...style }}>
         <div style={containerStyle}>
-          <div style={galleryStyle} ref='section' />
+          <ReactImageZoom {...props} img={imageLoc} />
         </div>
         <div style={{ ...jewelMainContainer, ...jewelContainerStyle }}>
           {jewelSet}
